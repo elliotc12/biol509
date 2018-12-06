@@ -1,0 +1,110 @@
+`Can you get a probability distribution of estimates from ML, not a naive classification?
+How do decision trees choose their branches?
+
+
+Regression ---
+Regression is any prediction where the guess is a continuous variable
+Three types: linear regression, decision trees and ensemble learning
+Evaluation of algorithm: error squared
+linear regression
+       Fitting a hyperplane to the data and using it to predict output
+       create a matrix of data X, with a column of 1s at the left; multiply by a weight vector a... Xa = y
+
+decision trees
+       Program which partitions features in windows and assigns values to each window
+       This is a weird sort of piecewise function fitting
+       This process is done in multiple dimensions at once
+       How the decisions are made is a free parameter
+
+Random forest
+       Do a bunch of decision trees and average their output
+       Each tree is trained on a different data subset (and potentially feature subset), but uses the same decision algorithm
+       "ensemble method" which uses many different instantiations of the same method
+       This procedure could give you a probability distribution
+       Parameters: number trees, split criterion, max depth
+       Easy to use out of the box
+
+Why do regularization? It introduces a free parameter and holdout seems like it would do the exact same thing
+
+Week5
+Fitting to a random feature
+Feature Selection - choosing good features to predict data
+	Maybe you could just test adding features and see if the prediction error goes down
+Regularization: penalizing models for overvaluing single features - not sure why this is done
+	Increasing error by beta^2
+Better way:
+       holdout
+Cross-validation: (LeavePOut, KFold, StratifiedKFold)
+	Iteratively do holdout to create a distribution of models, then take the best one
+Fitting hyperparameters:
+	Use 'GridSearchCV' to randomly search all permutations
+	You could use genetic algorithms
+	NestedCV is a better way
+
+
+Week 6: Supervised learning: classification
+
+Logistic function is sigmoidal around 0
+To use linear regression for category data, turn the categories into 0 and 1, then use gradient descent to fit a logistic function's output to the binarized data, varying the linear equation into the logistic function
+
+Decision trees method
+do a decision tree and feed its classification into a logistic function
+Use Gini impurity to choose where to split - gradient descent?
+
+K nearest neighbors
+Hard-code your input data into an algorithm. Find nearest neighbors to a test point and take the majority class value.
+
+Evaluation
+False positive: classify something A when it's not-A
+False negative: classify something as not-A when it's A
+
+Accuracy = TP + TN / (TP + TN + FP + FN)
+Sensitivity / recall = TP / (TP + FN) // how well can you classify things which are A, how sensitive are you to "pick up" things which are A
+Precision = TP / (TP + FP) // how reliable is a true judgment, how precise is a true A judgment
+
+F-score: weighted sum of sensitivity and precision by beta in [0,2]
+ROC: AUC of the false vs true positive rate, how much better are you at doing true positives than false positives. FP rate is the "permissivity"
+
+Permutation test:
+shuffle the labels to make a "null distribution" then recalculate the AUC a bunch to get a null distribution, this gives you a p-value "Permutation P-Value"
+
+
+Cross-validation can tell you how well your model generalizes. If you use KFold and the average test error is high, it generalizes poorly. Maybe a simpler model, fewer features, or higher lasso penalties would be better.
+
+With Lasso regression, the bias is decided by the lambda term. Too high and the model will not use the data, too low and the model will use the data too much and become overfit.
+
+
+Alex Fiorini Talk
+Works with PubMed on deep learning
+Deep Learning networks create their own features
+Network types: feedforward, convolutional, recurrent
+
+Feedforward: most basic
+
+Single-layer perceptron: one input layer, one output layer
+	     Multiply input vector with diagonal weight matrix, sum output vector, pass through a stepwise function
+The single-layer perceptron can't compute an XOR, since there's no set of weights which could work
+Need nonlinearity
+Somehow a sigmoidal function helps with this
+
+Loss function: how good the system currently is
+Backpropagation: how to take the loss function to modify weights to help the network learn
+
+L(A(B(WX)))
+Using the chain rule and gradient descent to optimize both W, B and A
+
+Hyperbolic tangent is another sigmoid-esque function which is zero at x=0, -1 and x=-1 and 1 when x=1
+
+Backpropagation algorithm: multiply the input by the dot of the
+L0: input vector(s)
+L1: apply weights, sum, feed through sigmoid
+L1_error: distance between the two
+L1_delta: Error times slope of sigmoid - big when in the middle, small when a strong answer
+Update weights based on dot of delta and input data, so weights change a lot when the output is on the fence
+
+Multilayer needed for nonlinear operations (eg XOR)
+
+CNNs
+Use filters on 2D data sets, filters are convolved with the input
+
+Keras is a deeplearning library for python which works on top of tensorflow
