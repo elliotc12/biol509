@@ -20,6 +20,7 @@ import pandas as pd
 # Use estimator.get_params()
 # Use a better scoring metric
 # Visualize data by stimulus, see if you can spot trends by eye. This would be good to have in a talk
+   # maybe plot signals (transformed or otherwise) per stimuli?
 # Look into the 'rifit' parameter of GridSearchCV, and also diff between non/nested search
 # You need to do a train/test split BEFORE GSCV, fit the parameters using the best CV, THEN evaluate the resultant optimized model on the test data
 
@@ -32,6 +33,8 @@ import pandas as pd
 # Do activity (stimulus == 0) testing as a baseline
 
 # Do nested GSCV to get the generalization score, then do GSCV on the whole set to get best estimator, then report that using classification_report
+
+# Vary the # of vectors to reduce dataset down to
 
 # make sure vectors don't have stimuli in them
 # transform into a lower-dimensional space
